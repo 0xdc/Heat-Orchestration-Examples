@@ -1,0 +1,62 @@
+heat_template_version: 2016-04-08
+
+parameters:
+  ssh_keypair_name:
+    description: Nova keypair name for ssh access to the server
+    type: string
+
+  ssh_private_key:
+    description: private key to access the created servers
+    type: string
+
+  nodeflavour:
+    description: Flavor for Cloud Servers
+    type: string
+    default: 2 GB General Purpose v1
+  
+  nodeimage:
+    description: Operating system to use for your server.
+    type: string
+    default: CentOS 7 (PVHVM) (Orchestration)
+
+  stack_id:
+    description: Stack ID
+    type: string
+
+  galeranetwork:
+    type: string
+    description: Network Name for internode communications
+    
+  galerasubnet:
+    type: string
+    description: Subnet used for the GaleraNetwork resources
+    
+resources:
+  galeraport:
+    type: "OS::Neutron::Port"
+    properties:
+      network_id: { get_param: galeranetwork }
+      fixed_ips:
+        - subnet_id: { get_param: galerasubnet }
+
+  galeranode:
+    type: OS::Nova::Server
+    depends_on: galeraport
+    properties:
+      name: node
+      flavor: { get_param: nodeflavour }
+      image: { get_param: nodeimage }
+      key_name: { get_param: ssh_keypair_name }
+      metadata:
+        rax-heat: { get_param: "stack_id" }
+      networks:
+        - port: { get_resource: galeraport }
+        - network: 00000000-0000-0000-0000-000000000000
+        - network: 11111111-1111-1111-1111-111111111111
+        
+outputs:
+  galeranode_ip:
+    value: { get_attr: [galeranode, accessIPv4] }
+
+  galeranode_private_ip:
+    value: { get_attr: [galeranode, networks, private, 0] }
