@@ -45,12 +45,6 @@ resources:
       config_drive: true
       user_data_format: SOFTWARE_CONFIG
 
-  diskvolume:
-    type: OS::Cinder::Volume
-    properties:
-      size: 150
-      image: f4bbbce2-50b0-4b07-bf09-96c175a45f4b
-
 outputs:
   stdout:
     description: Ansible Output
