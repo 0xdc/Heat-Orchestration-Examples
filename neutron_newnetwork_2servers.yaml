@@ -1,0 +1,57 @@
+heat_template_version: 2013-05-23
+
+# If you have more than a few servers, take a look at the neutron_port_resourcegroup.yaml
+# this uses nested templates to create ports for mulitple servers.
+
+resources:
+  my_network:
+    type: OS::Neutron::Net
+    properties:
+      name: private_net
+
+  my_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: my_network }
+      cidr: 192.168.100.0/24
+
+  my_server_port:
+    type: "OS::Neutron::Port"
+    properties:
+      network_id: { get_resource: my_network }
+      fixed_ips:
+        - subnet_id: { get_resource: my_subnet }
+
+  my_server:
+    type: OS::Nova::Server
+    properties:
+      name: node
+      flavor: 2 GB General Purpose v1
+      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM) (Orchestration)
+      networks:
+        - port: { get_resource: my_server_port }
+
+  my_server_port2:
+    type: "OS::Neutron::Port"
+    properties:
+      network_id: { get_resource: my_network }
+      fixed_ips:
+        - subnet_id: { get_resource: my_subnet }
+
+  my_server2:
+    type: OS::Nova::Server
+    properties:
+      name: node2
+      flavor: 2 GB General Purpose v1
+      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM) (Orchestration)
+      networks:
+        - port: { get_resource: my_server_port2 }
+
+outputs:
+  my_server_public:
+    value: { get_attr: [my_server, accessIPv4] }
+  my_server_private:
+    value: { get_attr: [my_server_port, fixed_ips, 0, ip_address] }
+  my_server:
+    value: { get_attr: [my_server, networks] }
+
