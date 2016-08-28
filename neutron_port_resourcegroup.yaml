@@ -3,8 +3,8 @@ heat_template_version: 2016-04-08
 parameter_groups:
 - label: Cloud Network Settings
   parameters:
-    - galeranetwork
-    - galerasubnet
+    - network
+    - subnet
 
 - label: Cloud Server Settings
   parameters:
@@ -13,13 +13,13 @@ parameter_groups:
     - nodecount
 
 parameters:
-  galeranetwork:
+  network:
     label: Network Name
     description: Network Name for internode communications
     type: string
     default: GaleraNetwork
-        
-  galerasubnet:
+  
+  subnet:
     label: Network Subnet
     description: Subnet used for the GaleraNetwork resources
     type: string
@@ -66,6 +66,17 @@ parameters:
       description: Must be a supported operating system
 
 resources:
+  galeranetwork:
+    type: OS::Neutron::Net
+    properties:
+      name: { get_param: network }
+
+  galerasubnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: galeranetwork }
+      cidr: { get_param: subnet }
+
   ssh_key:
     type: OS::Nova::KeyPair
     properties:
@@ -77,15 +88,15 @@ resources:
     properties:
       count: { get_param: nodecount }
       resource_def:
-        type: neutron_port_resourcegroup-childtemplate.yaml
+        type: https://raw.githubusercontent.com/aaronmehar/Heat-Orchestration-Examples/master/neutron_port_resourcegroup-childtemplate.yaml
         properties:
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key:  { get_attr: [ssh_key, private_key] }
           nodeflavour:      { get_param: nodeflavour }
           nodeimage:        { get_param: nodeimage }
           stack_id:         { get_param: "OS::stack_id" }
-          galeranetwork:    { get_para: galeranetwork }
-          galerasubnet:     { get_para: galerasubnet }
+          galera_network:   { get_resource: galeranetwork }
+          galera_subnet:    { get_resource: galerasubnet }
 
 outputs:
   galera_ips:
