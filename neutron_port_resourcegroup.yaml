@@ -29,7 +29,7 @@ parameters:
     label: Number of Servers
     description: Number of GlusterFS nodes to create
     type: number
-    default: 3
+    default: 5
     constraints:
       - allowed_values: [ 3, 5, 7, 9, 11 ]
     description: Cluster must have an odd number of nodes.
@@ -39,7 +39,7 @@ parameters:
     description: |
       The size is based on the amount of RAM for the provisioned server.
     type: string
-    default: 2 GB General Purpose v1
+    default: 4 GB General Purpose v1
     constraints:
       - allowed_values:
         - 2 GB General Purpose v1
@@ -58,7 +58,7 @@ parameters:
       Server image used for all servers that are created as a part of this
       deployment
     type: string
-    default: CentOS 7 (PVHVM) (Orchestration)
+    default: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM) (Orchestration)
     constraints:
     - allowed_values:
       - CentOS 7 (PVHVM) (Orchestration)
