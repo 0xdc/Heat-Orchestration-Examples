@@ -60,3 +60,6 @@ outputs:
 
   galeranode_private_ip:
     value: { get_attr: [galeranode, networks, private, 0] }
+    
+  galeranode_isolated_ip:
+    value: {get_attr: [galeraport, fixed_ips, 0, ip_address]}
