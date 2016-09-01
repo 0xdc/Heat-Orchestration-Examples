@@ -106,3 +106,7 @@ outputs:
   galera_private_ips:
     value: { get_attr: [galeranodes, galeranode_private_ip]}
     description: "Galera servicenet IPs"
+  
+  ssh_key:
+    description: "SSH Private Key"
+    value: { get_attr: [ssh_key, private_key]}
