@@ -35,9 +35,9 @@ resources:
   galeraport:
     type: "OS::Neutron::Port"
     properties:
-      network_id: { get_param: galeranetwork }
+      network_id: { get_param: galera_network }
       fixed_ips:
-        - subnet_id: { get_param: galerasubnet }
+        - subnet_id: { get_param: galera_subnet }
 
   galeranode:
     type: OS::Nova::Server
