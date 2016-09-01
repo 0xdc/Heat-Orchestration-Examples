@@ -110,3 +110,7 @@ outputs:
   ssh_key:
     description: "SSH Private Key"
     value: { get_attr: [ssh_key, private_key]}
+  
+  galera_isolated_ips:
+    description: "Galera isolated IPs"
+    value: { get_attr: [galeranodes, galeranode_isolated_ip]}
