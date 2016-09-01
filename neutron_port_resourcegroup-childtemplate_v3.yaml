@@ -43,7 +43,7 @@ resources:
     type: OS::Nova::Server
     depends_on: galeraport
     properties:
-      name: node
+      name: "The Cloud Database"
       flavor: { get_param: nodeflavour }
       image: { get_param: nodeimage }
       key_name: { get_param: ssh_keypair_name }
