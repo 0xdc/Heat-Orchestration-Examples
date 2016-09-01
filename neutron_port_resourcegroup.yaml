@@ -105,3 +105,4 @@ outputs:
   
   galera_private_ips:
     value: { get_attr: [galeranodes, galeranode_private_ip]}
+    description: "Galera servicenet IPs"
