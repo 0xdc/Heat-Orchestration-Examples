@@ -88,7 +88,7 @@ resources:
     properties:
       count: { get_param: nodecount }
       resource_def:
-        type: https://raw.githubusercontent.com/0xdc/Heat-Orchestration-Examples/master/neutron_port_resourcegroup-childtemplate.yaml
+        type: https://raw.githubusercontent.com/0xdc/Heat-Orchestration-Examples/master/neutron_port_resourcegroup-childtemplate_v2.yaml
         properties:
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key:  { get_attr: [ssh_key, private_key] }
