@@ -23,11 +23,11 @@ parameters:
     description: Stack ID
     type: string
 
-  galeranetwork:
+  galera_network:
     type: string
     description: Network Name for internode communications
     
-  galerasubnet:
+  galera_subnet:
     type: string
     description: Subnet used for the GaleraNetwork resources
     
